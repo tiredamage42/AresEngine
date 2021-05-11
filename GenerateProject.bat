@@ -1,3 +1,4 @@
+ECHO OFF
 del *.sln
 del *.vcxproj*
 rmdir /Q .vs

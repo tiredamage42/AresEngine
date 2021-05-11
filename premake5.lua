@@ -28,7 +28,7 @@ project "AresAPI"
     
     defines
     {
-        "ARESAPI_BUILD_DLL",
+        "_ARESAPI_BUILD_DLL",
     }
 	includedirs
 	{
@@ -59,28 +59,24 @@ project "AresEditorAPI"
 
     targetdir (BUILD_DIR)
     objdir (INTERMEDIATES_DIR)
-        
-    files
+    
+    defines
     {
-        "%{prj.name}/include/**.h",
-        "%{prj.name}/src/**.cpp",
+        "_ARESAPI_BUILD_DLL",
+        "ARES_EDITOR"
     }
     includedirs
     {
-        "%{prj.name}/include",
         "AresAPI/include",
     }
-    links
+    files
     {
-        "AresAPI",
-    } 
-    defines
-    {
-        "ARESEDITORAPI_BUILD_DLL"
+        "AresAPI/include/**.h",
+        "AresAPI/src/**.cpp",
     }
     
     filter "configurations:Debug"
-        defines "ARES_DEBUG"
+        defines "_ARES_DEBUG"
         runtime "Debug"
         symbols "on"
         
@@ -116,7 +112,7 @@ project "AresLauncher"
     }
         
     filter "configurations:Debug"
-        defines "ARES_DEBUG"
+        defines "_ARES_DEBUG"
         runtime "Debug"
         symbols "on"
         
@@ -142,15 +138,17 @@ project "AresEditor"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
     }
+    defines
+    {
+        "ARES_EDITOR"
+    }
     includedirs
     {
         "AresAPI/include",
-        "AresEditorAPI/include",
     }
     links
     {
-        "AresEditorAPI",
-        "AresAPI",
+        "AresEditorAPI"
     }
     postbuildcommands 
 	{
@@ -163,7 +161,7 @@ project "AresEditor"
 	}
 	    
     filter "configurations:Debug"
-        defines "ARES_DEBUG"
+        defines "_ARES_DEBUG"
         runtime "Debug"
         symbols "on"
         

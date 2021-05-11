@@ -11,7 +11,7 @@ A game engine based off [The Cherno's Hazel Engine](https://github.com/TheCherno
 
 **AresEditor [Executable]-** Program to edit Ares projects.
 
-**AresEditorAPI [Shared Library]-** Contains all the editor functionality, so projects can make custom editor windows, custom component field visualizations, etc.
+**AresEditorAPI [Shared Library]-** Same codebase as AresAPI, but contains all the editor functionality enabled, so projects can make custom editor windows, custom component field visualizations, etc.
 
 **AresLauncher [Executable]-** Program used to launch Ares projects (game launcher)
 

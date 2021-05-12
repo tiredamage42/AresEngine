@@ -143,6 +143,7 @@ project "AresEditor"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+        "%{prj.name}/resources.rc",
     }
     defines
     {

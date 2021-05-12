@@ -1,6 +1,6 @@
 #pragma once
 #include "Ares/config.h"
-namespace Ares
+namespace AresInternal
 {
     _ARES_API void InitializeEngine();
     _ARES_API void ShutdownEngine();

@@ -13,13 +13,13 @@ namespace Ares
     {
         friend int ::main(int argc, char** argv);
     public:
+        static void Close();
+    protected:
         Application(const char* title);
         virtual ~Application();
-        void Close();
+    private:
         static const char* GetConfigurationName();
         static Application& GetInstance();
-        
-    private:
         void Run();
         bool m_Running = true;
         static Application* s_Instance;

@@ -8,12 +8,11 @@ extern Ares::Application* Ares::CreateApplication();
 
 int main(int argc, char** argv)
 {
-	using namespace Ares;
-	InitializeEngine();
+	AresInternal::InitializeEngine();
 	
-	Application* app = CreateApplication();
+	Ares::Application* app = Ares::CreateApplication();
 	app->Run();
 	delete app;
 	
-	ShutdownEngine();
+	AresInternal::ShutdownEngine();
 }

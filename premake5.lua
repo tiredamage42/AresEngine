@@ -1,6 +1,14 @@
+-- EDIT THIS SECTION FOR CUSTOM BUILDS
+SPDLOG_INSTALL_DIR = "../AresEngineDependencies/SpdLog/spdlog/"
+-- EDIT THIS SECTION FOR CUSTOM BUILDS
+
 
 BUILD_DIR = "Builds/%{cfg.buildcfg}/%{prj.name}"
 INTERMEDIATES_DIR = "Intermediates/%{cfg.buildcfg}/%{prj.name}"
+
+-- include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["spdlog"] = SPDLOG_INSTALL_DIR .. "include"
 
 workspace "AresEngine"
 	architecture "x86_64"
@@ -22,7 +30,6 @@ project "AresAPI"
     cppdialect "C++17"
     staticruntime "off"
     systemversion "latest"
-
 	targetdir (BUILD_DIR)
 	objdir (INTERMEDIATES_DIR)
     
@@ -33,6 +40,7 @@ project "AresAPI"
 	includedirs
 	{
         "%{prj.name}/include",
+        "%{IncludeDir.spdlog}",
     }
     files
 	{
@@ -41,7 +49,7 @@ project "AresAPI"
     }   
     
 	filter "configurations:Debug"
-        defines "ARES_DEBUG"
+        defines "_ARES_DEBUG"
 		runtime "Debug"
         symbols "on"
         
@@ -56,7 +64,6 @@ project "AresEditorAPI"
     cppdialect "C++17"
     staticruntime "off"
     systemversion "latest"
-
     targetdir (BUILD_DIR)
     objdir (INTERMEDIATES_DIR)
     
@@ -68,6 +75,7 @@ project "AresEditorAPI"
     includedirs
     {
         "AresAPI/include",
+        "%{IncludeDir.spdlog}",
     }
     files
     {
@@ -92,8 +100,6 @@ project "AresLauncher"
     cppdialect "C++17"
     staticruntime "off"
     systemversion "latest"
-
-    debugdir (BUILD_DIR)
     targetdir (BUILD_DIR)
     objdir (INTERMEDIATES_DIR)
 
@@ -105,6 +111,7 @@ project "AresLauncher"
     includedirs
     {
         "AresAPI/include",
+        "%{IncludeDir.spdlog}",
     }
     links
     {
@@ -128,7 +135,6 @@ project "AresEditor"
     staticruntime "off"
     systemversion "latest"
     dependson { "AresLauncher" }
-
     debugdir (BUILD_DIR)
     targetdir (BUILD_DIR)
     objdir (INTERMEDIATES_DIR)
@@ -145,6 +151,7 @@ project "AresEditor"
     includedirs
     {
         "AresAPI/include",
+        "%{IncludeDir.spdlog}",
     }
     links
     {

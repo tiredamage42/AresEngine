@@ -16,7 +16,7 @@ namespace Ares
 
 	void Application::Close()
 	{
-		m_Running = false;
+		GetInstance().m_Running = false;
 	}
 
 	void Application::Run()
@@ -29,7 +29,7 @@ namespace Ares
 
 	const char* Application::GetConfigurationName()
 	{
-#if defined(ARES_DEBUG)
+#ifdef ARES_DEBUG
 		return "Debug";
 #else
 		return "Release";

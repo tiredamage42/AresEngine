@@ -22,18 +22,48 @@ A game engine based off [The Cherno's Hazel Engine](https://github.com/TheCherno
 
 Building AresEngine requires [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 
+**spdlog**
+```
+$ git clone https://github.com/gabime/spdlog.git
+```
+
 ## Building The Engine
 <hr>
 
-1 - Update the install directories of all the dependences at the top of ```premake5.lua```.
+1. Update the install directories of all the dependences at the top of ```premake5.lua```.
+2. Run ```GenerateProject.bat```.
+3. Build the ```AresEditor``` project.
+4. All the required files and libraries for the engine will be in ```Builds\Release\AresEditor\``` (or ```Builds\Debug\AresEditor\``` depending on the configuration you build)
 
-2 - Run ```GenerateProject.bat```.
+<hr><br><br><br><hr>
 
-3 - Build the ```AresEditor``` project.
-
-4 - All the required files and libraries for the engine will be in ```Builds\Release\AresEditor\``` (or ```Builds\Debug\AresEditor\``` depending on the configuration you build)
-
-
-## Scripting
+# Scripting
+## Common Defines
+| Define | Description |
+| --- | --- |
+| ARES_EDITOR | Defined only in the context of the editor. When defined you can use ```AresEditor``` namespace classes. |
 <hr>
-Coming soon...
+
+## Class ```Ares::Application```
+| Method | Description |
+| --- | --- |
+| static void Close | Close the currently running application |
+<hr>
+
+## Class ```Ares::Debug```
+All log messages are saved to a text file called ```Ares.log``` in the install directory of the executable being run (either AresEditor or AresLauncher).
+
+When running AresEditor, log messages can be seen in the ```Logs``` editor window.
+
+**Formatting:**
+
+See [spdlog's documentation](https://github.com/gabime/spdlog#basic-usage) for different formatting options.
+
+| Method | Description |
+| --- | --- |
+| static void Log | Log a normal message |
+| static void Info | Log an info (green) message |
+| static void Warn | Log a warning (yellow) message |
+| static void Error | Log an error (red) message |
+| static void Critical | Log a critical (red background) message |
+<hr>

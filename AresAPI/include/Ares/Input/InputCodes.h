@@ -1,5 +1,6 @@
 #pragma once
 #include "Ares/config.h"
+#include "Ares/Core/Core.h"
 
 namespace Ares
 {
@@ -15,38 +16,32 @@ namespace Ares
 	};
 
 #define ARES_NUM_MOUSECODES static_cast<unsigned char>(8)
-	enum class MouseCode : unsigned char
-	{
+	
+	ARES_ENUM(MouseCode, 
 		Left, Right, Middle, Button3, Button4, Button5, Button6, Button7
-	};
+	)
 
 
 #define ARES_NUM_GAMEPADS static_cast<unsigned char>(16)
 
-	enum class Gamepad : unsigned char
-	{
-		_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15,
+	ARES_ENUM(Gamepad,
+		Id0, Id1, Id2, Id3, Id4, Id5, Id6, Id7, Id8, Id9, Id10, Id11, Id12, Id13, Id14, Id15,
 		ANY
-	};
+	)
 
 #define ARES_NUM_GAMEPADBUTTONS static_cast<unsigned char>(15)
 #define ARES_NUM_GAMEPADAXES static_cast<unsigned char>(6)
-	enum class GamepadButton : unsigned char
-	{
+	ARES_ENUM(GamepadButton,
 		South, East, West, North,
 		LShoulder, RShoulder,
 		Back, Start, Guide,
 		LThumb, RThumb,
 		DPadUp, DPadRight, DPadDown, DPadLeft
-	};
-	enum class GamepadAxis : unsigned char
-	{
-		LX, LY, RX, RY, LT, RT
-	};
+	)
+	ARES_ENUM(GamepadAxis, LX, LY, RX, RY, LT, RT)
 
 #define ARES_NUM_KEYCODES static_cast<unsigned char>(121)
-	enum class KeyCode : unsigned char
-	{
+	ARES_ENUM(KeyCode,
 		Unknown,
 		Space,
 		Apostrophe, /* ' */
@@ -99,7 +94,7 @@ namespace Ares
 		LeftShift, LeftControl, LeftAlt, LeftSuper,
 		RightShift, RightControl, RightAlt, RightSuper,
 		Menu
-	};
+	)
 
 	/*
 		keycodes map to GLFW keys

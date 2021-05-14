@@ -284,6 +284,7 @@ namespace Ares
 
 		int success = glfwInit();
 		_ARES_ASSERT(success, "Could not initialize GLFW!");
+
 		glfwSetErrorCallback(GLFWErrorCallback);
 		
 		/*

@@ -20,12 +20,7 @@ namespace Ares
 	void Application::Initialize()
 	{
 		m_Window->SetVSync(false);
-
 		m_Window->Maximize();
-		//m_Window->SetFullScreen();
-		//m_Window->Restore();
-		//m_Window->Restore();
-
 		OnInitialize();
 	}
 
@@ -45,21 +40,35 @@ namespace Ares
 
 	void Application::EventCallback(Event& e)
 	{
+		// give events to app first.
+		// what if mouse clicked on ui button? we don't want event propogated to input, 
+		// or else gun might fire
+		OnEvent(e);
+		if (e.m_Handled)
+		{
+			return;
+		}
+
 		Input::OnEvent(e);
+		if (e.m_Handled)
+		{
+			return;
+		}
 
 		e.DispatchFuncIfType<WindowResolutionResizeEvent>(this, &Application::OnWindowResize);
-		
-		OnEvent(e);
-
-		if (!e.m_Handled)
+		if (e.m_Handled)
 		{
-			e.DispatchFuncIfType<WindowCloseEvent>(this, &Application::OnWindowClose);
+			return;
 		}
+
+		e.DispatchFuncIfType<WindowCloseEvent>(this, &Application::OnWindowClose);
 	}
+
 	bool Application::OnWindowResize(const WindowResolutionResizeEvent& e)
 	{
 		return false;
 	}
+	
 	bool Application::OnWindowClose(const WindowCloseEvent& e)
 	{
 		m_Running = false;

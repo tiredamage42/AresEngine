@@ -35,9 +35,7 @@ namespace Ares
 	{
 		friend class Application;
 	public:
-		Window(const char* title, int width, int height, bool resizeable, const std::function<void(Event&)>& callback);
-		~Window();
-
+		
 		inline int GetResolutionWidth() const { return m_Data.ResolutionWidth; }
 		inline int GetResolutionHeight() const { return m_Data.ResolutionHeight; }
 		void SetResolution(int width, int height) const;
@@ -73,11 +71,13 @@ namespace Ares
 		void SetCursor(Cursor cursor);
 		void EnableCursor(bool enabled);
 
-		
 		void RequestAttention();
 		void Close() const;
 
 	private:
+		Window(const char* title, int width, int height, bool resizeable, const std::function<void(Event&)>& callback);
+		~Window();
+
 		void CacheCurrentValues();
 		void Render();
 

@@ -70,7 +70,6 @@ function AresAPIShared()
 	filter "configurations:Release"
 		runtime "Release"
         optimize "on"
-    
 end
 
 project "AresAPI"
@@ -84,8 +83,6 @@ project "AresEditorAPI"
     {
         "ARES_EDITOR"
     }
-
-
 
 function ExecutablesShared()
     LanguageSpecs()
@@ -144,17 +141,28 @@ project "AresEditor"
     postbuildcommands 
 	{
         -- copy all the shared Libraries Needed:
-        '{COPY} "../Builds/%{cfg.buildcfg}/AresAPI/AresAPI.dll" "%{cfg.targetdir}"',
         '{COPY} "../Builds/%{cfg.buildcfg}/AresEditorAPI/AresEditorAPI.dll" "%{cfg.targetdir}"',
+        
+        -- copy launcher executable and its dependencies
+        '{MKDIR} "%{cfg.targetdir}/GameDeployment"',
+        '{COPY} "../Builds/%{cfg.buildcfg}/AresAPI/AresAPI.dll" "%{cfg.targetdir}/GameDeployment"',
+        '{COPY} "../Builds/%{cfg.buildcfg}/AresLauncher/AresLauncher.exe" "%{cfg.targetdir}/GameDeployment"',
 
-        -- copy launcher executable
-        '{COPY} "../Builds/%{cfg.buildcfg}/AresLauncher/AresLauncher.exe" "%{cfg.targetdir}"',
+        -- copy the necessary includes (for scripting)
+        '{MKDIR} "%{cfg.targetdir}/Scripting/lib"',
+        '{MKDIR} "%{cfg.targetdir}/Scripting/include"',
+        
+        '{COPY} "../%{IncludeDir.spdlog}" "%{cfg.targetdir}/Scripting/include/spdlog"', 
+        '{COPY} "../AresAPI/include" "%{cfg.targetdir}/Scripting/include/AresAPI"',
+        
+        -- copy the core .lib files so scripting projects can link to them
+        '{COPY} "../Builds/%{cfg.buildcfg}/AresEditorAPI/AresEditorAPI.lib" "%{cfg.targetdir}/Scripting/lib"',
+        '{COPY} "../Builds/%{cfg.buildcfg}/AresAPI/AresAPI.lib" "%{cfg.targetdir}/Scripting/lib"',
 	}
 	    
     filter "configurations:Debug"
         postbuildcommands 
         {
-            '{COPY} "../Builds/%{cfg.buildcfg}/AresAPI/AresAPI.pdb" "%{cfg.targetdir}"',
-            '{COPY} "../Builds/%{cfg.buildcfg}/AresEditorAPI/AresEditorAPI.pdb" "%{cfg.targetdir}"',
+            '{COPYFILE} "../Builds/%{cfg.buildcfg}/AresEditorAPI/AresEditorAPI.pdb" "%{cfg.targetdir}"',
         }
 		

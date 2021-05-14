@@ -27,7 +27,7 @@ namespace AresInternal
 		std::vector<spdlog::sink_ptr> logSinks;
 
 		// only log to console in debug builds
-#ifdef ARES_DEBUG
+#ifdef _ARES_DEBUG
 		logSinks.push_back(std::make_shared<spdlog::sinks::wincolor_stdout_sink_mt>());
 		// logs :: [time] [name]: message
 		logSinks.back()->set_pattern("%^[%T] [%n]: %v%$"); 

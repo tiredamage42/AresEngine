@@ -1,15 +1,7 @@
-#include <Ares.h>
+#include "AresEditor.h"
 #include <EntryPoint.h>
 namespace Ares
 {
-	class AresEditor : public Application
-	{
-	public:
-		AresEditor() : Application("Ares Editor")
-		{
-		}
-	};
-
 	Application* CreateApplication()
 	{
 		return new AresEditor();

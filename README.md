@@ -26,6 +26,14 @@ Building AresEngine requires [Visual Studio 2019](https://visualstudio.microsoft
 ```
 $ git clone https://github.com/gabime/spdlog.git
 ```
+**GLFW**
+```
+$ git clone https://github.com/glfw/glfw.git
+$ cd glfw
+$ cmake . -DUSE_MSVC_RUNTIME_LIBRARY_DLL=ON
+$ cmake --build . --config Debug
+$ cmake --build . --config Release
+```
 
 ## Building The Engine
 <hr>

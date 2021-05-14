@@ -4,6 +4,7 @@
 #pragma warning(push)
 #pragma warning(disable:26812 26495 26451 26498)
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
 #pragma warning(pop)
 
 #define DEBUG_DECLARATION(name, internalcall) \

@@ -25,33 +25,34 @@ workspace "AresEngine"
 		"MultiProcessorCompile"
 	}
 	
-
-project "AresAPI"
-	location "AresAPI"
-	kind "SharedLib"
+function LanguageSpecs()
     language "C++"
     cppdialect "C++17"
     staticruntime "off"
     systemversion "latest"
 	targetdir (BUILD_DIR)
 	objdir (INTERMEDIATES_DIR)
-    
+end
+
+function AresAPIShared()
+    kind "SharedLib"
+    LanguageSpecs()
+
     defines
     {
         "_ARESAPI_BUILD_DLL",
     }
-	includedirs
+    includedirs
 	{
-        "%{prj.name}/include",
+        "AresAPI/include",
         "%{IncludeDir.spdlog}",
         "%{IncludeDir.GLFW}",
     }
     files
 	{
-        "%{prj.name}/include/**.h",
-        "%{prj.name}/src/**.cpp",
-    }   
-
+        "AresAPI/include/**.h",
+        "AresAPI/src/**.cpp",
+    }
     libdirs
     {
         GLFW_INSTALL_DIR .. "src/%{cfg.buildcfg}",
@@ -61,8 +62,7 @@ project "AresAPI"
         "glfw3.lib",
         "opengl32.lib",
     }
-    
-	filter "configurations:Debug"
+    filter "configurations:Debug"
         defines "_ARES_DEBUG"
 		runtime "Debug"
         symbols "on"
@@ -70,115 +70,72 @@ project "AresAPI"
 	filter "configurations:Release"
 		runtime "Release"
         optimize "on"
+    
+end
+
+project "AresAPI"
+	location "AresAPI"
+    AresAPIShared()
         
 project "AresEditorAPI"
     location "AresEditorAPI"
-    kind "SharedLib"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "off"
-    systemversion "latest"
-    targetdir (BUILD_DIR)
-    objdir (INTERMEDIATES_DIR)
-    
+    AresAPIShared()
     defines
     {
-        "_ARESAPI_BUILD_DLL",
         "ARES_EDITOR"
     }
-    includedirs
-    {
-        "AresAPI/include",
-        "%{IncludeDir.spdlog}",
-        "%{IncludeDir.GLFW}",
-    }
-    files
-    {
-        "AresAPI/include/**.h",
-        "AresAPI/src/**.cpp",
-    }
-
-    libdirs
-    {
-        GLFW_INSTALL_DIR .. "src/%{cfg.buildcfg}",
-    }
-    links
-    {
-        "glfw3.lib",
-        "opengl32.lib",
-    }
-
-    filter "configurations:Debug"
-        defines "_ARES_DEBUG"
-        runtime "Debug"
-        symbols "on"
-        
-    filter "configurations:Release"
-        runtime "Release"
-        optimize "on"
 
 
-project "AresLauncher"
-    location "AresLauncher"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "off"
-    systemversion "latest"
-    targetdir (BUILD_DIR)
-    objdir (INTERMEDIATES_DIR)
+
+function ExecutablesShared()
+    LanguageSpecs()
 
     files
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
     }
+
     includedirs
     {
         "AresAPI/include",
         "%{IncludeDir.spdlog}",
     }
-    links
-    {
-        "AresAPI",
-    }
-        
     filter "configurations:Debug"
         kind "ConsoleApp"
         defines "_ARES_DEBUG"
         runtime "Debug"
         symbols "on"
-        
+    
     filter "configurations:Release"
         kind "WindowedApp"
         entrypoint "mainCRTStartup"
         runtime "Release"
         optimize "on"
-            
+end
+
+project "AresLauncher"
+    location "AresLauncher"
+    ExecutablesShared()
+
+    links
+    {
+        "AresAPI",
+    }
+                    
 project "AresEditor"
     location "AresEditor"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "off"
-    systemversion "latest"
+    ExecutablesShared()
     dependson { "AresLauncher" }
     debugdir (BUILD_DIR)
-    targetdir (BUILD_DIR)
-    objdir (INTERMEDIATES_DIR)
-
+    
     files
     {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp",
         "%{prj.name}/resources.rc",
     }
     defines
     {
         "ARES_EDITOR"
-    }
-    includedirs
-    {
-        "AresAPI/include",
-        "%{IncludeDir.spdlog}",
     }
     links
     {
@@ -195,19 +152,9 @@ project "AresEditor"
 	}
 	    
     filter "configurations:Debug"
-        kind "ConsoleApp"
-        defines "_ARES_DEBUG"
-        runtime "Debug"
-        symbols "on"
         postbuildcommands 
         {
             '{COPY} "../Builds/%{cfg.buildcfg}/AresAPI/AresAPI.pdb" "%{cfg.targetdir}"',
             '{COPY} "../Builds/%{cfg.buildcfg}/AresEditorAPI/AresEditorAPI.pdb" "%{cfg.targetdir}"',
         }
-        
-    filter "configurations:Release"
-        kind "WindowedApp"
-        entrypoint "mainCRTStartup"
-        runtime "Release"
-        optimize "on"
 		

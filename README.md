@@ -34,6 +34,123 @@ $ cmake . -DUSE_MSVC_RUNTIME_LIBRARY_DLL=ON
 $ cmake --build . --config Debug
 $ cmake --build . --config Release
 ```
+**Glad**
+1. Go to: https://glad.dav1d.de/ and choose the following configuration:
+   ![GladSpecs](Documentation/GladSpecs.png)
+2. Click Generate
+3. Click on Glad.zip to download.
+4. in extracted directory, create a file called ```premake5.lua```:
+    ```lua
+    workspace "Glad"
+        architecture "x86_64"
+        configurations
+        {
+            "Debug",
+            "Release",
+        }
+        flags
+        {
+            "MultiProcessorCompile"
+        }
+    project "Glad"
+        kind "StaticLib"
+        language "C"
+        staticruntime "off"
+        systemversion "latest"
+        targetdir ("%{cfg.buildcfg}")
+        objdir ("Intermediates/%{cfg.buildcfg}")
+        files
+        {
+            "include/glad/glad.h",
+            "include/KHR/khrplatform.h",
+            "src/glad.c",
+        }
+        includedirs "include"
+        filter "configurations:Debug"
+            runtime "Debug"
+            symbols "on"
+        filter "configurations:Release"
+            runtime "Release"
+            optimize "on"
+    ```
+5. In the same directory, open a command prompt and create the visual studio project with premake:
+   > There is a premake exectuable included in this repo, use the path to that for this step.
+   ```
+   $ path\to\AresEngine\Premake\premake5.exe vs2019
+   ```
+6. Build the ```Debug``` and ```Release``` configurations.
+
+**ImGui**
+
+1. 
+   ```
+   $ git clone -b docking --single-branch https://github.com/ocornut/imgui.git
+   ```
+
+2. In ```imconfig.h```:
+
+	Replace:
+    ```c++
+    //#define IMGUI_API __declspec( dllexport )
+    //#define IMGUI_API __declspec( dllimport )
+    ```
+	with:
+    ```c++
+    #ifdef IMGUI_BUILD_DLL
+        #define IMGUI_API __declspec(dllexport)
+    #else
+        #define IMGUI_API __declspec(dllimport)
+    #endif
+    ```
+3. In the repository's root directory, create a file called ```premake5.lua```:
+   ```lua
+    workspace "ImGui"
+	    architecture "x86_64"	
+	    configurations
+	    {
+            "Debug",
+            "Release",
+        }
+        flags
+        {
+            "MultiProcessorCompile"
+        }
+    project "ImGui"
+	    kind "SharedLib"
+        language "C++"
+        cppdialect "C++17"
+        staticruntime "off"
+	    systemversion "latest"
+        targetdir ("%{cfg.buildcfg}")
+        objdir ("Intermediates/%{cfg.buildcfg}")
+        defines
+        {
+            "IMGUI_BUILD_DLL"
+        }
+        includedirs
+        {
+            "include",
+        }
+        files
+        {
+            "include/**.h",
+            "src/**.cpp",
+        }
+        filter "configurations:Debug"
+            runtime "Debug"
+            symbols "on"
+        filter "configurations:Release"
+            runtime "Release"
+            optimize "on"
+   ```
+4. Put all the .h files into a new folder called ```include``` and the .cpp files into a new folder called ```src```.
+
+5. In the repository's root directory, open a command prompt and create the visual studio project with premake:
+   > There is a premake exectuable included in this repo, use the path to that for this step.
+   ```
+   $ path\to\AresEngine\Premake\premake5.exe vs2019
+   ```
+6. Build the ```Debug``` and ```Release``` configurations.
 
 ## Building The Engine
 <hr>

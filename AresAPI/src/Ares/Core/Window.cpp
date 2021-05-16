@@ -5,6 +5,8 @@
 #include "Ares/Input/InputCodes.h"
 
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
+
 namespace Ares
 {
 	Window::Window(const char* title, int width, int height, bool resizeable, const std::function<void(Event&)>& callback)
@@ -232,11 +234,11 @@ namespace Ares
 		});
 		glfwGetWindowPos(m_Window, &m_Data.PosX, &m_Data.PosY);
 
-		// get paths dropped onto window (EDITOR ONLY)
 		glfwSetDropCallback(m_Window, [](GLFWwindow* window, int count, const char** paths)
 		{
 			((WindowData*)glfwGetWindowUserPointer(window))->EventCallback(FilesDroppedEvent(paths, count));
 		});
+
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
 			((WindowData*)glfwGetWindowUserPointer(window))->EventCallback(WindowCloseEvent());
@@ -303,8 +305,8 @@ namespace Ares
 		
 		glfwMakeContextCurrent(m_Window);
 
-		//int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		//_ARES_ASSERT(status, "Could not initialize Glad!");
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		_ARES_ASSERT(status, "Could not initialize Glad!");
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 
@@ -322,17 +324,17 @@ namespace Ares
 		AddInputEventCallbacks();
 
 		AresInternal::Debug::Log("Window:: creating cursors...");
-		m_MouseCursors[static_cast<int>(Cursor::Arrow)] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::TextInput)] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::ResizeAll)] = glfwCreateStandardCursor(GLFW_RESIZE_ALL_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::ResizeNS)] = glfwCreateStandardCursor(GLFW_RESIZE_NS_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::ResizeEW)] = glfwCreateStandardCursor(GLFW_RESIZE_EW_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::ResizeNESW)] = glfwCreateStandardCursor(GLFW_RESIZE_NESW_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::ResizeNWSE)] = glfwCreateStandardCursor(GLFW_RESIZE_NWSE_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::Hand)] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::Crosshair)] = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::NotAllowed)] = glfwCreateStandardCursor(GLFW_NOT_ALLOWED_CURSOR);
-		m_MouseCursors[static_cast<int>(Cursor::PointingHand)] = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::Arrow)] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::TextInput)] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::ResizeAll)] = glfwCreateStandardCursor(GLFW_RESIZE_ALL_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::ResizeNS)] = glfwCreateStandardCursor(GLFW_RESIZE_NS_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::ResizeEW)] = glfwCreateStandardCursor(GLFW_RESIZE_EW_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::ResizeNESW)] = glfwCreateStandardCursor(GLFW_RESIZE_NESW_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::ResizeNWSE)] = glfwCreateStandardCursor(GLFW_RESIZE_NWSE_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::Hand)] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::NotAllowed)] = glfwCreateStandardCursor(GLFW_NOT_ALLOWED_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::PointingHand)] = glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR);
+		m_MouseCursors[static_cast<unsigned char>(Cursor::Crosshair)] = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 
 
 		/*
@@ -345,6 +347,12 @@ namespace Ares
 
 	void Window::Shutdown()
 	{
+		AresInternal::Debug::Log("Window:: Destroying Cursors...");
+		for (unsigned char i = 0; i < k_NumCursors; ++i)
+		{
+			glfwDestroyCursor(m_MouseCursors[i]);
+		}
+
 		AresInternal::Debug::Log("Window:: Destroying Window...");
 		glfwDestroyWindow(m_Window);
 		AresInternal::Debug::Log("Window:: Terminating GLFW...");

@@ -1,16 +1,20 @@
 #pragma once
-#include "Ares/config.h"
+#include "config.h"
 #include <string>
 #include <functional>
 
 struct GLFWwindow;
 struct GLFWcursor;
 
+namespace AresEditorInternal
+{
+	class ImGuiWrapper;
+}
 namespace Ares 
 {
 	struct Event;
 	
-	enum class Cursor
+	enum class Cursor : unsigned char
 	{
 		Arrow,
 		TextInput,
@@ -34,6 +38,7 @@ namespace Ares
 	class _ARES_API Window
 	{
 		friend class Application;
+		friend class AresEditorInternal::ImGuiWrapper;
 	public:
 		
 		inline int GetResolutionWidth() const { return m_Data.ResolutionWidth; }
@@ -74,6 +79,8 @@ namespace Ares
 		void RequestAttention();
 		void Close() const;
 
+		inline GLFWwindow* GetNativeWindow() const { return m_Window; }
+
 	private:
 		Window(const char* title, int width, int height, bool resizeable, const std::function<void(Event&)>& callback);
 		~Window();
@@ -91,7 +98,9 @@ namespace Ares
 		void Shutdown();
 
 		GLFWwindow* m_Window;
-		GLFWcursor* m_MouseCursors[11] = { 0 };
+
+		inline static const unsigned char k_NumCursors = 11;
+		GLFWcursor* m_MouseCursors[k_NumCursors] = { 0 };
 
 		struct WindowData 
 		{

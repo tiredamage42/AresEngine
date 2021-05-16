@@ -1,9 +1,10 @@
 #pragma once
+#include "config.h"
 #include <string>
 #include <vector>
 namespace Ares
 {
-	class StringUtils
+	class _ARES_API StringUtils
 	{
 	public:
 		static void RemoveWhiteSpace(std::string& str);

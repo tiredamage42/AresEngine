@@ -1,5 +1,5 @@
 #pragma once
-#include <Ares.h>
+#include <AresAPI.h>
 namespace Ares
 {
 	class AresEditor : public Application
@@ -10,5 +10,7 @@ namespace Ares
 		virtual void OnUpdate() override;
 		virtual void OnEvent(Event& event) override;
 		virtual void OnShutdown() override;
+	private:
+		void OnImGuiDraw();
 	};
 }

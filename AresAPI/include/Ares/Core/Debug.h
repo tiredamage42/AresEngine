@@ -1,5 +1,5 @@
 #pragma once
-#include "Ares/config.h"
+#include "config.h"
 
 #pragma warning(push)
 #pragma warning(disable:26812 26495 26451 26498)
@@ -61,7 +61,7 @@ namespace Ares
 	};
 }
 
-#ifdef ARES_DEBUG
+#ifdef _ARES_DEBUG
 #define _ARES_DEBUGBREAK() __debugbreak()
 #define _ARES_ASSERT(x, errMsg) { if (!(x)) { AresInternal::Debug::Critical("Assertion Failed: {}", errMsg); _ARES_DEBUGBREAK(); } }
 #else

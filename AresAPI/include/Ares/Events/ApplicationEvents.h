@@ -50,6 +50,7 @@ namespace Ares
 		WindowPosChangeEvent(int x, int y) : X(x), Y(y) { }
 		_EVENT_DECLARE
 	};
+
 	struct _ARES_API FilesDroppedEvent : public Event
 	{
 		const char** Paths;
@@ -57,6 +58,7 @@ namespace Ares
 		FilesDroppedEvent(const char** paths, int count) : Paths(paths), Count(count) { }
 		_EVENT_DECLARE
 	};
+
 	struct _ARES_API WindowCloseEvent : public Event
 	{
 		_EVENT_DECLARE

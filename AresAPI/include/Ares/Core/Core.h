@@ -1,8 +1,11 @@
 #pragma once
+#include "config.h"
+#include <vector>
+#include <string>
 
 namespace AresInternal
 {
-    const std::vector<std::string> BuildEnumNames(const char* nameschar);
+    _ARES_API const std::vector<std::string> BuildEnumNames(const char* nameschar);
 }
 
 /*
@@ -12,5 +15,4 @@ namespace AresInternal
 	enum class name : unsigned char { __VA_ARGS__ }; \
 	static const std::vector<std::string> name##AsStrings = AresInternal::BuildEnumNames(#__VA_ARGS__);
 
-#define ARES_ENUM_TO_STRING(name, enum_value) \
-	name##AsStrings[static_cast<unsigned char>(name::enum_value)]
+#define ARES_ENUM_TO_STRING(name, enum_value) name##AsStrings[static_cast<unsigned char>(name::enum_value)]

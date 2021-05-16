@@ -1,5 +1,5 @@
 #pragma once
-#include <Ares.h>
+#include <AresAPI.h>
 namespace Ares
 {
 	class AresLauncher : public Application

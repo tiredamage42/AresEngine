@@ -1,5 +1,5 @@
 #pragma once
-#include "Ares/config.h"
+#include "config.h"
 namespace AresInternal
 {
     _ARES_API void InitializeEngine();

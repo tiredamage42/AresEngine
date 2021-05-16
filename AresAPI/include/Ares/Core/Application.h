@@ -1,5 +1,5 @@
 #pragma once
-#include "Ares/config.h"
+#include "config.h"
 
 int main(int argc, char** argv);
 
@@ -15,7 +15,7 @@ namespace Ares
         friend int ::main(int argc, char** argv);
     public:
         static void Close();
-        inline Window* GetWindow() const { return m_Window; }
+        inline static Window* GetWindow() { return s_Instance->m_Window; }
     protected:
         Application(const char* title, int windowWidth, int windowHeight, bool resizable);
         virtual ~Application();
